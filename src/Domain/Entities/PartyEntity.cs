@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Saiketsu.Service.Party.Domain.Entities;
+﻿namespace Saiketsu.Service.Party.Domain.Entities;
 
 public sealed class PartyEntity
 {

@@ -25,7 +25,7 @@ public sealed class PartiesController : ControllerBase
     [SwaggerResponse(StatusCodes.Status200OK, "Retrieved parties successfully", typeof(List<PartyEntity>))]
     public async Task<IActionResult> Get()
     {
-        var request = new GetPartiesQuery{  };
+        var request = new GetPartiesQuery();
         var response = await _mediator.Send(request);
 
         return Ok(response);

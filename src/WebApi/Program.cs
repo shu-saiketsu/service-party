@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Saiketsu.Service.Party.Application;
 using Saiketsu.Service.Party.Application.Common;
+using Saiketsu.Service.Party.Domain.Options;
+using Saiketsu.Service.Party.Infrastructure;
 using Saiketsu.Service.Party.Infrastructure.Persistence;
 using Serilog;
 using Serilog.Events;
@@ -56,6 +58,9 @@ static void AddServices(WebApplicationBuilder builder)
             .UseSnakeCaseNamingConvention();
     });
 
+    builder.Services.Configure<RabbitMQOptions>(builder.Configuration.GetSection(RabbitMQOptions.Position));
+
+    builder.Services.AddSingleton<IEventBus, RabbitEventBus>();
     builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 }
 
