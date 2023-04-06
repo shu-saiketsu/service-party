@@ -9,6 +9,8 @@
 		<UserSecretsId>3fda0c36-5a45-4c01-9264-5ccd5e8ba1ed</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>..\..</DockerfileContext>
+		<DockerfileTag>saiketsu/party</DockerfileTag>
+		<DockerfileRunArguments>--name saiketsu-party</DockerfileRunArguments>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -21,6 +23,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
 		<PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="5.2.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 	</ItemGroup>
