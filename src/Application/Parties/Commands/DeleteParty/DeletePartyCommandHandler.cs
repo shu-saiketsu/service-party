@@ -30,8 +30,8 @@ public sealed class DeletePartyCommandHandler : IRequestHandler<DeletePartyComma
         _context.Parties.Remove(party);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var integrationEvent = new PartyDeletedIntegrationEvent { Id = request.Id };
-        _eventBus.Publish(integrationEvent);
+        var @event = new PartyDeletedIntegrationEvent { Id = request.Id };
+        _eventBus.Publish(@event);
 
         return true;
     }

@@ -11,7 +11,7 @@ using Saiketsu.Service.Party.Infrastructure.Persistence;
 namespace Saiketsu.Service.Party.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230331104207_SampleMigration")]
+    [Migration("20230405191233_SampleMigration")]
     partial class SampleMigration
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace Saiketsu.Service.Party.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

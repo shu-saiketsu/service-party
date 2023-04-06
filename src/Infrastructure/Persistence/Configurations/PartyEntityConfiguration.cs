@@ -10,6 +10,9 @@ internal class PartyEntityConfiguration : IEntityTypeConfiguration<PartyEntity>
     {
         builder.ToTable("party");
 
+        builder.Property(x => x.Id)
+            .UseIdentityAlwaysColumn();
+
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(50);

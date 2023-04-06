@@ -33,14 +33,14 @@ public sealed class CreatePartyCommandHandler : IRequestHandler<CreatePartyComma
         await _context.Parties.AddAsync(party, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
-        var integrationEvent = new PartyCreatedIntegrationEvent
+        var @event = new PartyCreatedIntegrationEvent
         {
             Id = party.Id,
             Name = party.Name,
             Description = party.Description
         };
 
-        _eventBus.Publish(integrationEvent);
+        _eventBus.Publish(@event);
 
         return party;
     }
