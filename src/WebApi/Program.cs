@@ -18,6 +18,14 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
+static void PerformDataMigrations(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (app.Environment.IsDevelopment()) context.Database.Migrate();
+}
+
 static void AddMiddleware(WebApplication app)
 {
     app.UseSerilogRequestLogging();
@@ -29,6 +37,13 @@ static void AddMiddleware(WebApplication app)
     }
 
     app.MapControllers();
+    app.MapHealthChecks("/health");
+}
+
+static void SubscribeEventBus(IHost app)
+{
+    using var scope = app.Services.CreateScope();
+    var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 }
 
 static void AddServices(WebApplicationBuilder builder)
@@ -36,6 +51,8 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
+
+    builder.Services.AddHealthChecks();
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
     builder.Services.AddValidatorsFromAssemblyContaining<IApplicationMarker>();
@@ -57,7 +74,11 @@ static void AddServices(WebApplicationBuilder builder)
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-                builder => { builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName); })
+                builder =>
+                {
+                    builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                    builder.EnableRetryOnFailure();
+                })
             .UseSnakeCaseNamingConvention();
     });
 
@@ -89,6 +110,8 @@ try
     var app = builder.Build();
 
     AddMiddleware(app);
+    SubscribeEventBus(app);
+    PerformDataMigrations(app);
 
     app.Run();
 }
